@@ -44,7 +44,6 @@
 
 
 
-(describe "winnin-board"
 	(it "should be 1"
 		(should= 1 (winning-board? ["x" "x" "x" 3 4 5 6 7 8]))))
 
@@ -57,9 +56,13 @@
 		(should= 1 (check-all-slices-for-win? ["x" 1 2 3 4 5 6 7 8 9 10 11 12 "x" 14 15 16 17 18 19 20 21 22 23 24 25 "x"])))
 
 	(it "should return 1 if win on diagonal slice 18 22 26"
-		(should= 1 (check-all-slices-for-win? [0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 "x" 19 20 21 "x" 23 24 25 "x"])))
+		(should= 1 (check-all-slices-for-win? [0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 "x" 19 20 21 "x" 23 24 25 "x"]))))
 
-)
+(describe "get best score 3d"
+	(it "should pick immediate winning move"
+		(should= 26 (get-best-score ["x" 1 2 3 4 5 6 7 8 9 10 11 12 "x" 14 15 16 17 18 19 20 21 22 23 24 25 26] "x" 0
+			))))
+
 
 
 ; (describe "game-over"
