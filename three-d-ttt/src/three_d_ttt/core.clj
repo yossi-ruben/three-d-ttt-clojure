@@ -1,9 +1,9 @@
 (ns three-d-ttt.core)
 
 
-; (def board [0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26])
+(def board [0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26])
 
- (def board ["x" 1 2 3 4 5 6 7 8 9 10 11 12 "x" 14 15 16 17 18 19 20 21 22 23 24 25 26])
+ ; (def board ["x" 1 2 3 4 5 6 7 8 9 10 11 12 "x" 14 15 16 17 18 19 20 21 22 23 24 25 26])
 
 (defn print-board [board]
 	(println)
@@ -38,16 +38,6 @@
  	(assoc board (Integer. place) piece))
 
 
-(defn take-turn [board piece]
-  	(slice-and-print board)
-  	(println (str piece " - Its your turn"))
-  	(println "Select Slot (0 - 26) ")
-  	(let [place (read-line) board board]
-  		(if (valid-move? board place)
-  	  	(place-piece board piece place)
-  	  	(take-turn board piece))))
-
-
 (defn winning-board? [board]
 	(cond 
 	  (some true? (map #(apply = %) (partition-all 3 board))) 1
@@ -79,22 +69,29 @@
 
 (defn minimax [board symbol depth]
 	; (slice-and-print board)
-          (cond
+          ; (cond
           	;(if (= 1 (check-all-slices-for-win? board)){:score (+ -10 depth)} {:score 0} )
             ; (win? board) {:score (+ -10 depth)}
             ; (full? board) {:score 0}
-            (= 1 (check-all-slices-for-win? board)) {:score (+ -10 depth)}
-            (empty? (open-slots board) ) {:score 0}
 
-            :else (compare-scores (for [x (open-slots board)]
+            ; (= 1 (check-all-slices-for-win? board)) {:score (+ -10 depth)}
+            ; (empty? (open-slots board) ) {:score 0}
+
+            (if (or (empty? (open-slots board)) (= 1 (check-all-slices-for-win? board)))
+            	(if (= 1 (check-all-slices-for-win? board)) 
+				{:score (+ -10 depth)}
+				{:score 0}
+            	)
+				
+			    (compare-scores (for [x (open-slots board)]
                       (let [tempboard (assoc board x symbol)]
                       {:score (- (:score (minimax
                       tempboard
                       (opposing-piece symbol)
                       (inc depth)
-                      )))
-                      :index x})
-                      ))))
+                      ))):index x})))))
+
+          
 
 
 (defn get-best-score [board symbol]
@@ -107,6 +104,24 @@
  	(if (or (= 1 (check-all-slices-for-win? board)) (not-any? number? board) ) true false))
 
 
+(defn take-turn [board piece]
+  	(slice-and-print board)
+  	(println (str piece " - Its your turn"))
+  	(println "Select Slot (0 - 26) ")
+	(if (= piece "o")
+		(do
+			(println "here")
+		(place-piece board piece (get-best-score board piece))
+		)
+	  
+  	  (let [place (read-line) board board]
+  		(if (valid-move? board place)
+  	  	(place-piece board piece place)
+  	  	(take-turn board piece)))
+  	  )
+	)
+
+
 (defn play-game [board sym]
   	(if (game-over? board) 
   		(do 
@@ -116,9 +131,9 @@
 		(play-game (take-turn board sym) (opposing-piece sym))))
 
 
-(get-best-score board "x")
+; (get-best-score board "x")
 
-; (play-game board "x")
+(play-game board "x")
 
 
 

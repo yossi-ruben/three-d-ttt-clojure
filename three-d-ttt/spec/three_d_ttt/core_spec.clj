@@ -43,7 +43,7 @@
 (describe "return new board for turn")
 
 
-
+(describe "should be winnfin"
 	(it "should be 1"
 		(should= 1 (winning-board? ["x" "x" "x" 3 4 5 6 7 8]))))
 
@@ -56,11 +56,15 @@
 		(should= 1 (check-all-slices-for-win? ["x" 1 2 3 4 5 6 7 8 9 10 11 12 "x" 14 15 16 17 18 19 20 21 22 23 24 25 "x"])))
 
 	(it "should return 1 if win on diagonal slice 18 22 26"
-		(should= 1 (check-all-slices-for-win? [0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 "x" 19 20 21 "x" 23 24 25 "x"]))))
+		(should= 1 (check-all-slices-for-win? [0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 "x" 19 20 21 "x" 23 24 25 "x"])))
+
+	(it "should return 2 if win for no wins"
+		(should= 2 (check-all-slices-for-win? ["x" "o" "x" "o" "x" "o" "o" "x" "o" "x" "o" "x" "o" "x" "o" "o" "x" "o" 18 19 20 21 22 23 24 25 26]))))
+
 
 (describe "get best score 3d"
 	(it "should pick immediate winning move"
-		(should= 26 (get-best-score ["x" 1 2 3 4 5 6 7 8 9 10 11 12 "x" 14 15 16 17 18 19 20 21 22 23 24 25 26] "x" 0
+		(should= 26 (get-best-score ["x" "o" "x" "o" "x" "o" "o" "x" "o" "x" "o" "x" "o" "x" "o" "o" "x" "o" 18 19 20 21 22 23 24 25 26] "x"
 			))))
 
 
@@ -69,16 +73,27 @@
 ; 	(it "should not be a game over"
 ; 		(should= false (game-over? board))))
 
+; (comment
+;  18 19 20
+;  21 22 23 
+;  24 25 26
+
+;  9x 10o 11x
+;  12o 13x 14o 
+;  15o 16x 17o 
+
+;  0x 1o 2x 
+;  3o 4x 5o 
+;  6o 7x 8o 
+
+
+; x o x
+; o x o 
+; o x o
 
 
 
-
-
-
-
-
-
-
+; )
 
 
 
